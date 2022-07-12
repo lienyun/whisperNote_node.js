@@ -11,7 +11,12 @@ const session = require('express-session')
 app.use(session({
   secret: 'whispernote',
   resave: false, //固定寫法
-  saveUninitialized: true //固定寫法
+  saveUninitialized: true, //固定寫法
+  cookie: {
+ 
+    // Session expires after 1 day of inactivity.
+    expires: 8640000
+}
 }))
 
 //使用bodyParser解析post回來的資料(request body)

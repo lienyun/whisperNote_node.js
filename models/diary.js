@@ -15,7 +15,7 @@ const Diary = database.define('diary', {
     type: String,
     allowNull: false,
   },
-  time: {
+  date: {
     type: Date,
     allowNull: true,
     defaultValue: DataTypes.NOW
