@@ -9,9 +9,9 @@ router.post('/signup', userHandler.postSignup)
 // 登入
 router.post('/login', userHandler.postLogin)
 // 登出
-router.post('/', userHandler.postLogout)
+router.post('/logout', userHandler.postLogout)
 //登入狀態
-router.post('/', userHandler.loginStatus)
+router.post('/loginStatus', userHandler.loginStatus)
 
 
 
