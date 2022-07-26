@@ -1,5 +1,6 @@
 const db = require('../db/index')
 
+//新增日記
 const addPostDiary = (req, res) =>{
   const diaryContent = req.body
   const addSql = 'insert into diary set ?'
@@ -7,7 +8,26 @@ const addPostDiary = (req, res) =>{
     if (err) return res.cc(err)
     if (results.affectedRows === 1) return res.send({status:1, message: '新增日記成功！'})
   })
+}
 
+//get所有分類
+const getPer = (req, res) => {
+  const gerPerSql = 'select * from diarypermission where user_id = ?'
+  db.query(getPerSql, req.session.user_id, (err, results) =>{
+    if (err) return console.log(err.message)
+    console.log(results)
+    res.send({ status: 1, message: '取得分類成功！' })
+  })
+}
+
+//新增分類
+const addPer = (req, res) => {
+  const perContent = req.body
+  const addPerSql = 'insert into diarypermission set ?'
+  db.query(addPerSql, { user_id: req.session.user_id, per_name: perContent.newPermission}, (err, results) => {
+    if (err) return res.cc(err)
+    res.send({ status: 1, message: '新增分類成功！' })
+  })
 }
 
 // 所有的日記
@@ -27,14 +47,27 @@ const getDiary = (req, res)=>{
 
 //修改日記
 const editDiary = (req, res) => {
-  const editSql = 'update diary set ? where user_id = req.session.user_id'
+  const diaryContent = req.body
+  const editSql = 'update diary set diary where diary_id = ?'
+  db.query(editSql, diaryContent.diary_id, (err, results) => {
+    if (err) return res.cc(err)
+    if (results.affectedRows === 1) {
+      console.log('修改日記成功')
+    }
+    res.send({
+      status:1,
+      message: '修改日記成功',
+      data: results
+    })
+  })
 }
 
 
-// 1: 使用中的帳號 0: 停用中的帳號
+// 1: 存在的日記 0: 刪除的日記
 const deleteDiary = (req, res) => {
-  const deleteSql = 'update user set status = 0 where id = req.session.user_id'
-  db.query(deleteSql, (err, results) => {
+  const diaryContent = req.body
+  const deleteSql = 'update diary set diary_status = 0 where diary_id = ?'
+  db.query(deleteSql, diaryContent.diary_id, (err, results) => {
     if (err) return res.cc(err)
     if (results.affectedRows === 1) {
       console.log('標記刪除成功！')
@@ -46,5 +79,6 @@ module.exports = {
   addPostDiary,
   getDiary,
   deleteDiary,
-  editDiary
+  editDiary,
+  addPer
 }

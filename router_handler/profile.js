@@ -10,7 +10,6 @@ const getProfile = (req, res) => {
       status: 1,
       data: results[0]
     })
-    //TODO: return req.body回去
   })
 }
 //更新profile
