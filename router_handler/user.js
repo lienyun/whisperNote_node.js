@@ -42,6 +42,11 @@ const postLogin = (req, res) => {
 
   const sql = 'select * from user where email = ?'
   db.query(sql, userinfo.email, (err, results) => {
+
+    if (results.length === 0) {
+      return res.cc('email或密碼有誤！請重新登入！')
+    }
+
     const comparePassword = bcrypt.compareSync(userinfo.password, results[0].password)
 
     if (err) return console.log(err.message)
