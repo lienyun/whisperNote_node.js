@@ -10,6 +10,9 @@ router.post('/signup', userHandler.postSignup)
 router.post('/login', userHandler.postLogin)
 // 登出
 router.post('/', userHandler.postLogout)
+//登入狀態
+router.post('/', userHandler.loginStatus)
+
 
 
 module.exports = router

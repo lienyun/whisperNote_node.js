@@ -80,5 +80,6 @@ module.exports = {
   getDiary,
   deleteDiary,
   editDiary,
-  addPer
+  addPer,
+  getPer
 }

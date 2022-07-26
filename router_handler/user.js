@@ -47,9 +47,15 @@ const postLogin = (req, res) => {
     if (err) return console.log(err.message)
 
     if (userinfo.email !== results[0].email || !comparePassword) {
+      console.log(results[0].email)
       return res.cc('email或密碼有誤！請重新登入！')
     }
 
+
+    if (userinfo.email !== results[0].email) {
+      console.log(results[0].email)
+      return res.cc('email有誤！請重新登入！')
+    }
     req.session.userinfo = req.body
     req.session.user_id = results[0].user_id
     req.session.isLogin = true
@@ -67,9 +73,18 @@ const postLogout = (req, res) => {
   )
 }
 
+const loginStatus = (req, res) => {
+  if(res.locals.isLogin){
+      return res.send({ loginStatus:1 })
+  } else {
+      return res.send({ loginStatus:0 })
+  }
+}
+
 
 module.exports = {
   postSignup,
   postLogin,
-  postLogout
+  postLogout,
+  loginStatus
 }

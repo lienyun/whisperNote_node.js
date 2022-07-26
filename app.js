@@ -36,6 +36,17 @@ app.use(function (req, res, next) {
   next()
 })
 
+app.use((req, res, next) => {
+  //res.locals, session都是express-session設定的全域變數，每個模板都可以使用
+  //把path存到全域變數，後續可以直接使用，render時不用再傳入path參數
+  res.locals.path = req.url;
+  //把isLogin存在全域變數，登入狀態(布林值)
+  res.locals.isLogin = req.session.isLogin || false;
+  //把csrfToken存在全域變數
+  // res.locals.csrfToken = req.csrfToken();
+  next();
+});
+
 
 
 app.use(cors())
@@ -56,6 +67,8 @@ app.use('/friend', friendRouter)
 
 const characterRouter = require('./router/character')
 app.use('/character', characterRouter)
+
+
 
 
 
