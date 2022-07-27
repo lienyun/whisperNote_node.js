@@ -70,12 +70,13 @@ const postLogin = (req, res) => {
 }
 
 const postLogout = (req, res) => {
-  req.session.destroy(
-    res.send({
+  req.session.destroy((err) => {
+    console.log('session destroy() error: ', err);
+    return res.send({ 
       status: 1,
-      msg: '登出成功'
+      msg: '登出成功' 
     })
-  )
+  });
 }
 
 const loginStatus = (req, res) => {

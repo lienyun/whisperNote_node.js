@@ -11,7 +11,7 @@ router.post('/login', userHandler.postLogin)
 // 登出
 router.post('/logout', userHandler.postLogout)
 //登入狀態
-router.post('/loginStatus', userHandler.loginStatus)
+router.get('/loginStatus', userHandler.loginStatus)
 
 
 
