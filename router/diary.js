@@ -12,6 +12,9 @@ router.get('/editDiary', diaryHandler.editDiary)
 
 router.get('/addPer', diaryHandler.addPer)
 
+router.post('/deleteDiary', diaryHandler.deleteDiary)
+
+
 
 module.exports = router
 

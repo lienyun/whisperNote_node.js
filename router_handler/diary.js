@@ -32,24 +32,23 @@ const addPer = (req, res) => {
 
 // 所有的日記
 const getDiary = (req, res)=>{
-  const getDiarySql = 'select * from diary where user_id = ?'
+  const getDiarySql = 'select * from diary where user_id = ? and diary_status = 1'
   db.query(getDiarySql, req.session.user_id, (err, results)=>{
     if (err) return res.cc(err)
-    // console.log(results)
+    console.log(results)
     res.send({
       status:1 ,
       message:'GET到你日記了啦！',
       data: results
     })
-
   })
 }
 
 //修改日記
 const editDiary = (req, res) => {
   const diaryContent = req.body
-  const editSql = 'update diary set diary where diary_id = ?'
-  db.query(editSql, diaryContent.diary_id, (err, results) => {
+  const editSql = 'update diary set title = ?, date = ?, content = ? where diary_id = ?'
+  db.query(editSql, [diaryContent.title, diaryContent.date, diaryContent.content], (err, results) => {
     if (err) return res.cc(err)
     if (results.affectedRows === 1) {
       console.log('修改日記成功')
