@@ -16,9 +16,11 @@ const getFriend = (req, res) => {
 //新增好友
 const addFriend = (req, res) => {
   const friendContent = req.body
+  console.log(friendContent)
   const addFriendSql = 'insert into friend set ?'
-  db.query(addFriendSql, friendContent.user_id, (err, results) => {
+  db.query(addFriendSql, friendContent.email, (err, results) => {
     if (err) return res.cc(err)
+    console.log(err)
     if (results.affectedRows === 1) 
     return res.send({ status: 1, message: '新增好友成功！' })
   })

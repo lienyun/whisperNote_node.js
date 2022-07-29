@@ -8,9 +8,13 @@ router.post('/addDiary', diaryHandler.addPostDiary)
 
 router.get('/getDiary', diaryHandler.getDiary)
 
-router.get('/editDiary', diaryHandler.editDiary)
+router.post('/editDiary', diaryHandler.editDiary)
 
-router.get('/addPer', diaryHandler.addPer)
+router.post('/deleteDiary', diaryHandler.deleteDiary)
+
+router.post('/addPer', diaryHandler.addPer)
+
+router.get('/getPer', diaryHandler.getPer)
 
 router.post('/deleteDiary', diaryHandler.deleteDiary)
 
