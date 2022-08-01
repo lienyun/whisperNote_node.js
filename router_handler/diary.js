@@ -31,11 +31,23 @@ const addPer = (req, res) => {
   })
 }
 
-// 所有的日記
+// 所有的日記(月曆)
 const getDiary = (req, res)=>{
-
   const getDiarySql = 'select * from diary where user_id = ? and diary_status = 1'
+  db.query(getDiarySql, req.session.user_id, (err, results)=>{
+    if (err) return res.cc(err)
+    console.log(results)
+    res.send({
+      status:1 ,
+      message:'GET到你日記了啦！',
+      data: results
+    })
+  })
+}
 
+// 我的日記
+const getMyDiary = (req, res)=>{
+  const getDiarySql = 'select * from diary NATURAL JOIN diarypermission where user_id ? and diary_status = ?'
   db.query(getDiarySql, req.session.user_id, (err, results)=>{
     if (err) return res.cc(err)
     console.log(results)
@@ -86,5 +98,6 @@ module.exports = {
   deleteDiary,
   editDiary,
   addPer,
-  getPer
+  getPer,
+  getMyDiary
 }
