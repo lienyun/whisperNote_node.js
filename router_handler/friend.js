@@ -17,8 +17,8 @@ const getFriend = (req, res) => {
 const addFriend = (req, res) => {
   const friendContent = req.body
   console.log(friendContent)
-  const addFriendSql = 'insert into friend set ?'
-  db.query(addFriendSql, friendContent.email, (err, results) => {
+  const addFriendSql = 'insert into friend values (?, ?)'
+  db.query(addFriendSql, {user_id: req.session.user_id, friend_id: friendContent.email}, (err, results) => {
     if (err) return res.cc(err)
     console.log(err)
     if (results.affectedRows === 1) 

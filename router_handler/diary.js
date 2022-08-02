@@ -33,7 +33,7 @@ const addPer = (req, res) => {
 
 // 所有的日記(月曆)
 const getDiary = (req, res)=>{
-  const getDiarySql = 'select * from diary where user_id = ? and diary_status = 1'
+  const getDiarySql = 'select * from diary NATURAL JOIN diarypermission where user_id = ? and diary_status = 1'
   db.query(getDiarySql, req.session.user_id, (err, results)=>{
     if (err) return res.cc(err)
     console.log(results)
@@ -47,10 +47,10 @@ const getDiary = (req, res)=>{
 
 // 我的日記
 const getMyDiary = (req, res)=>{
-  const getDiarySql = 'select * from diary NATURAL JOIN diarypermission where user_id ? and diary_status = ?'
+  const getDiarySql = 'select * from diary NATURAL JOIN diarypermission where user_id = ? and diary_status = 1'
   db.query(getDiarySql, req.session.user_id, (err, results)=>{
     if (err) return res.cc(err)
-    console.log(results)
+    // console.log(results)
     res.send({
       status:1 ,
       message:'GET到你日記了啦！',
@@ -61,11 +61,13 @@ const getMyDiary = (req, res)=>{
 
 //修改日記
 const editDiary = (req, res) => {
-  const diaryContent = req.body
+  const diaryContent = req.body.diaryDetail
+  console.log('diaryContent', diaryContent)
 
-  const editSql = 'update diary set title = ?, date = ?, content = ? where diary_id = ?'
-  db.query(editSql, [diaryContent.title, diaryContent.date, diaryContent.content], (err, results) => {
+  const editSql = 'UPDATE diary SET title = ?, date = ?, permission_id=?, content = ? WHERE diary_id = ?'
+  db.query(editSql, [diaryContent.title, diaryContent.date, diaryContent.permission_id, diaryContent.content, diaryContent.diary_id], (err, results) => {
 
+    console.log('修改日記', results)
     if (err) return res.cc(err)
     if (results.affectedRows === 1) {
       console.log('修改日記成功')
