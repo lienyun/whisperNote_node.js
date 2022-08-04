@@ -47,6 +47,13 @@ const addFriend = (req, res) => {
       const addFriendSql = 'INSERT INTO friend(user_id, friend_id, friend_displayname, friend_pic) VALUES (?,(SELECT user.user_id FROM user WHERE user.email = ?),(SELECT user.displayname FROM user WHERE user.email = ?),(SELECT user.user_pic FROM user WHERE user.email = ?))'
       db.query(addFriendSql, [req.session.user_id, friendContent.email, friendContent.email, friendContent.email], (err, results) => {
 
+        if (results.email === friendContent.email) {
+          return res.send({
+            status: 0,
+            message: '不要輸入自己的email'
+          })
+        }
+
         if (err) return res.cc(err)
         console.log(err)
         console.log('addFriend', results)
@@ -59,6 +66,7 @@ const addFriend = (req, res) => {
     })
   })
 }
+
 
 module.exports = {
   getFriend,
