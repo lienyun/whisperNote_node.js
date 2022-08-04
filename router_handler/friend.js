@@ -19,10 +19,27 @@ const getFriend = (req, res) => {
 const addFriend = (req, res) => {
 
   const friendContent = req.body
-  console.log('addFriendEmail', friendContent)
 
+  //沒有這個user
+  const noUserSql = 'select * from user where email = ?'
+  db.query(noUserSql, friendContent.email, (err, results) => {
+    if (err) return console.log(err.message)
+    if (results.length === 0) {
+      return res.cc('沒有這個user，請重新輸入')
+    }
+  })
+
+  //已經是好友了
+  const friendNowSql = 'select * from friend where friend.friend_id = (select user.user_id from user where user.email = ?)'
+  db.query(friendNowSql, friendContent.email, (err, results) => {
+    if (err) return console.log(err.message)
+    if (results.length > 0) {
+      return res.cc('已經是好友了，請重新輸入')
+    }
+  })
+
+  //加好友
   const addFriendSql = 'INSERT INTO friend(user_id, friend_id, friend_displayname, friend_pic) VALUES (?,(SELECT user.user_id FROM user WHERE user.email = ?),(SELECT user.displayname FROM user WHERE user.email = ?),(SELECT user.user_pic FROM user WHERE user.email = ?))'
-  // TODO: 檢查有沒有這個email、已經是好友就不要再新增
   db.query(addFriendSql, [req.session.user_id,friendContent.email,friendContent.email,friendContent.email], (err, results) => {
 
     if (err) return res.cc(err)
