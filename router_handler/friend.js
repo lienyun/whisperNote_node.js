@@ -21,9 +21,9 @@ const addFriend = (req, res) => {
   const friendContent = req.body
   console.log('addFriendEmail', friendContent)
 
-  const addFriendSql = 'INSERT INTO friend VALUES ((SELECT user_id FROM user WHERE user_id = 9),(SELECT user_id FROM user WHERE email = ?));'
+  const addFriendSql = 'INSERT INTO friend(user_id, friend_id, friend_displayname, friend_pic) VALUES (?,(SELECT user.user_id FROM user WHERE user.email = ?),(SELECT user.displayname FROM user WHERE user.email = ?),(SELECT user.user_pic FROM user WHERE user.email = ?))'
   // TODO: 檢查有沒有這個email、已經是好友就不要再新增
-  db.query(addFriendSql, friendContent.email, (err, results) => {
+  db.query(addFriendSql, [req.session.user_id,friendContent.email,friendContent.email,friendContent.email], (err, results) => {
 
     if (err) return res.cc(err)
     console.log(err)
