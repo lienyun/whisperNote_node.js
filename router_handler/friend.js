@@ -2,7 +2,7 @@ const db = require('../db/index')
 
 //顯示朋友列表
 const getFriend = (req, res) => {
-  const getFriendSql = 'SELECT user.user_id, user.email, friend.friend_id, user.displayname, user_pic FROM user LEFT JOIN friend ON user_id=friend.user_id WHERE user_id = ?'
+  const getFriendSql = 'SELECT user.user_id, user.email, friend.friend_id, friend.friend_displayname, friend.friend_pic FROM user LEFT JOIN friend ON user.user_id=friend.user_id WHERE user.user_id = ?'
   db.query(getFriendSql, req.session.user_id, (err, results) => {
     if (err) return res.cc(err)
     console.log('getFriend',results)
@@ -12,19 +12,26 @@ const getFriend = (req, res) => {
       data: results
     })
   })
+
 }
 
 //新增好友
 const addFriend = (req, res) => {
+
   const friendContent = req.body
   console.log(friendContent)
-  const addFriendSql = 'SELECT * FROM users NATURAL JOIN friend ON user.user_id = friend.friend_id; '
-  // TODO: 要用email去查是哪個user，然後插入user_id到friend
-  db.query(addFriendSql, {user_id: req.session.user_id, friend_id: friendContent.email}, (err, results) => {
+  const addFriendSql = 'INSERT INTO friend VALUES ((SELECT user_id FROM user WHERE user_id = ?),(SELECT user_id FROM user WHERE email = ?));'
+  // TODO: 檢查有沒有這個email、已經是好友就不要再新增
+  db.query(addFriendSql, [req.session.user_id, friendContent.email], (err, results) => {
+
     if (err) return res.cc(err)
     console.log(err)
+
     if (results.affectedRows === 1) 
-    return res.send({ status: 1, message: '新增好友成功！' })
+    return res.send({ 
+      status: 1, 
+      message: '新增好友成功！' 
+    })
   })
 }
 
