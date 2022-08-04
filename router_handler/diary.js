@@ -1,3 +1,4 @@
+const e = require('cors')
 const db = require('../db/index')
 
 //新增日記
@@ -31,7 +32,7 @@ const addPer = (req, res) => {
   })
 }
 
-// 所有的日記(月曆)
+// 所有的日記(月曆)(我+朋友的)
 const getDiary = (req, res)=>{
   const getDiarySql = 'select * from diary NATURAL JOIN diarypermission where user_id = ? and diary_status = 1'
   db.query(getDiarySql, req.session.user_id, (err, results)=>{
@@ -62,7 +63,7 @@ const getMyDiary = (req, res)=>{
 //修改日記
 const editDiary = (req, res) => {
   const diaryContent = req.body.diaryDetail
-  console.log('diaryContent', diaryContent)
+  // console.log('diaryContent', diaryContent)
 
   const editSql = 'UPDATE diary SET title = ?, date = ?, permission_id=?, content = ? WHERE diary_id = ?'
   db.query(editSql, [diaryContent.title, diaryContent.date, diaryContent.permission_id, diaryContent.content, diaryContent.diary_id], (err, results) => {

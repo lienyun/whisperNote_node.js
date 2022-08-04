@@ -66,7 +66,7 @@ const friendRouter = require('./router/friend')
 app.use('/', friendRouter)
 
 const characterRouter = require('./router/character')
-app.use('/character', characterRouter)
+app.use('/', characterRouter)
 
 
 
