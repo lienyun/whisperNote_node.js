@@ -33,31 +33,31 @@ const addFriend = (req, res) => {
     }
 
     //已經是好友了
-  const friendNowSql = 'select * from friend where friend.friend_id = (select user.user_id from user where user.email = ?)'
-  db.query(friendNowSql, friendContent.email, (err, results) => {
-    if (err) return console.log(err.message)
-    if (results.length > 0) {
-      return res.send({
-        status: 0,
-        message: '已經是好友了，請重新輸入！'
-      })
-    }
-  })
-    //加好友
-    const addFriendSql = 'INSERT INTO friend(user_id, friend_id, friend_displayname, friend_pic) VALUES (?,(SELECT user.user_id FROM user WHERE user.email = ?),(SELECT user.displayname FROM user WHERE user.email = ?),(SELECT user.user_pic FROM user WHERE user.email = ?))'
-    db.query(addFriendSql, [req.session.user_id, friendContent.email, friendContent.email, friendContent.email], (err, results) => {
-  
-      if (err) return res.cc(err)
-      console.log(err)
-      console.log('addFriend', results)
-      if (results.affectedRows === 1)
+    const friendNowSql = 'select * from friend where friend.friend_id = (select user.user_id from user where user.email = ?)'
+    db.query(friendNowSql, friendContent.email, (err, results) => {
+      if (err) return console.log(err.message)
+      if (results.length > 0) {
         return res.send({
-          status: 1,
-          message: '新增好友成功！'
+          status: 0,
+          message: '已經是好友了，請重新輸入！'
         })
+      }
+
+      //加好友
+      const addFriendSql = 'INSERT INTO friend(user_id, friend_id, friend_displayname, friend_pic) VALUES (?,(SELECT user.user_id FROM user WHERE user.email = ?),(SELECT user.displayname FROM user WHERE user.email = ?),(SELECT user.user_pic FROM user WHERE user.email = ?))'
+      db.query(addFriendSql, [req.session.user_id, friendContent.email, friendContent.email, friendContent.email], (err, results) => {
+
+        if (err) return res.cc(err)
+        console.log(err)
+        console.log('addFriend', results)
+        if (results.affectedRows === 1)
+          return res.send({
+            status: 1,
+            message: '新增好友成功！'
+          })
+      })
     })
   })
-
 }
 
 module.exports = {
