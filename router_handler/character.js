@@ -17,9 +17,12 @@ const getCharacter = (req, res) => {
 //新增八卦人物
 const addCharacter = (req, res) => {
   const characterContent = req.body
-  const addCharacterSql = 'insert into character values (?, ?, ?, ?) '
-  db.query(addCharacterSql, { character_name: characterContent.name, character_info: characterContent.info, character_pic: characterContent.pic, user_id: req.session.user_id }, (err, results) => {
+  console.log('characterContent',characterContent)
+
+  const addCharacterSql = 'INSERT INTO character (character_name, character_info, character_pic, user_id) VALUES (?, ?, ?, ?)'
+  db.query(addCharacterSql, {character_name: characterContent.name, character_info: characterContent.info, character_pic: characterContent.pic, user_id: req.session.user_id }, (err, results) => {
     if (err) return res.cc(err)
+    console.log('results', results)
     if (results.affectedRows === 1) return res.send({ status: 1, message: '新增人物成功！' })
   })
 }

@@ -6,7 +6,7 @@ const characterHandler = require('../router_handler/character')
 
 router.get('/character', characterHandler.getCharacter)
 
-router.get('/addCharacter', characterHandler.addCharacter)
+router.post('/addCharacter', characterHandler.addCharacter)
 
 router.get('/editCharacter', characterHandler.editCharacter)
 

@@ -5,7 +5,7 @@ const getFriend = (req, res) => {
   const getFriendSql = 'SELECT user.user_id, user.email, friend.friend_id, friend.friend_displayname, friend.friend_pic FROM user LEFT JOIN friend ON user.user_id=friend.user_id WHERE user.user_id = ?'
   db.query(getFriendSql, req.session.user_id, (err, results) => {
     if (err) return res.cc(err)
-    // console.log('getFriend', results)
+
     res.send({
       status: 1,
       message: '朋友名單GET',
@@ -22,8 +22,7 @@ const addFriend = (req, res) => {
   //沒有這個user
   const noUserSql = 'select * from user where email = ?'
   db.query(noUserSql, friendContent.email, (err, results) => {
-    console.log('friendContent.email', friendContent.email)
-    console.log('results', results)
+
     if (err) return console.log(err.message)
     if (results.length === 0) {
       return res.send({

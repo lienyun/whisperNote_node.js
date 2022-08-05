@@ -13,6 +13,10 @@ router.post('/logout', userHandler.postLogout)
 //登入狀態
 router.get('/loginStatus', userHandler.loginStatus)
 
+//取得登入者資料
+router.get('/getUser', userHandler.getUser)
+
+
 
 
 module.exports = router
