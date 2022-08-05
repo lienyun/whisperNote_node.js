@@ -33,8 +33,8 @@ const addFriend = (req, res) => {
     }
 
     //已經是好友了
-    const friendNowSql = 'select * from friend where friend.friend_id = (select user.user_id from user where user.email = ?)'
-    db.query(friendNowSql, friendContent.email, (err, results) => {
+    const friendNowSql = 'select * from friend where friend.friend_id = (select user.user_id from user where user.email = ?) AND user_id = ?'
+    db.query(friendNowSql, [friendContent.email, req.session.user_id], (err, results) => {
       if (err) return console.log(err.message)
       if (results.length > 0) {
         return res.send({
