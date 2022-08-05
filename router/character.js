@@ -8,5 +8,10 @@ router.get('/character', characterHandler.getCharacter)
 
 router.get('/addCharacter', characterHandler.addCharacter)
 
+router.get('/editCharacter', characterHandler.editCharacter)
+
+router.get('/deleteCharacter', characterHandler.deleteCharacter)
+
+
 module.exports = router
 
