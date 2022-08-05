@@ -2,7 +2,7 @@ const db = require('../db/index')
 
 //取得八卦人物列表
 const getCharacter = (req, res) => {
-  const getCharacterSql = 'select * from character where user_id = ?'
+  const getCharacterSql = 'SELECT * FROM whispernote0803.character WHERE user_id = ?'
   db.query(getCharacterSql, req.session.user_id, (err, results) => {
     if (err) return res.cc(err)
     res.send({
@@ -19,7 +19,7 @@ const addCharacter = (req, res) => {
   const characterContent = req.body
   console.log('characterContent',characterContent)
 
-  const addCharacterSql = 'INSERT INTO character (character_name, character_info, character_pic, user_id) VALUES (?, ?, ?, ?)'
+  const addCharacterSql = 'INSERT INTO whispernote0803.character (character_name, character_info, character_pic, user_id) VALUES (?, ?, ?, ?)'
   db.query(addCharacterSql, [characterContent.name, characterContent.info, characterContent.pic, req.session.user_id ], (err, results) => {
     if (err) return res.cc(err)
     console.log('results', results)
@@ -30,8 +30,9 @@ const addCharacter = (req, res) => {
 
 //修改八卦人物
 const editCharacter = (req, res) => {
-  const editSql = 'update character set character where user_id = ?'
-  db.query(editSql, req.session.user_id, (err, results) => {
+  const editContent = req.body
+  const editSql = 'update whispernote0803.character set character_name = ?, character_info = ?,character_pic = ? where user_id = ?'
+  db.query(editSql, [editContent.name, editContent.info, editContent.pic, req.session.user_id], (err, results) => {
     if (err) return res.cc(err)
     if (results.affectedRows === 1) {
       console.log('修改人物成功')
@@ -46,7 +47,7 @@ const editCharacter = (req, res) => {
 
 //刪除八卦人物
 const deleteCharacter = (req, res) => {
-  const deleteSql = 'update character set status = 0 where character_id =?'
+  const deleteSql = 'update whispernote0803.character set status = 0 where character_id =?'
   const characterContent = req.body
   db.query(deleteSql, characterContent.character_id, (err, results) => {
     if (err) return res.cc(err)

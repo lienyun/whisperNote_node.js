@@ -12,6 +12,9 @@ router.get('/editCharacter', characterHandler.editCharacter)
 
 router.get('/deleteCharacter', characterHandler.deleteCharacter)
 
+router.get('/getCharacter', characterHandler.getCharacter)
+
+
 
 module.exports = router
 
