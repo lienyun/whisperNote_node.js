@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs')
 //目前登入者資訊
 
 const getUser = (req, res) => {
-  const getUserSql = 'select dispalyname, email, user_pic from user where user_id = ?'
+  const getUserSql = 'select displayname, email, user_pic from user where user_id = ?'
   db.query(getUserSql, req.session.user_id, (err, results) => {
     if (err) return res.cc(err)
     res.send({ status: 1, message: '取得登入者資訊成功！', data: results })

@@ -20,9 +20,10 @@ const addCharacter = (req, res) => {
   console.log('characterContent',characterContent)
 
   const addCharacterSql = 'INSERT INTO character (character_name, character_info, character_pic, user_id) VALUES (?, ?, ?, ?)'
-  db.query(addCharacterSql, {character_name: characterContent.name, character_info: characterContent.info, character_pic: characterContent.pic, user_id: req.session.user_id }, (err, results) => {
+  db.query(addCharacterSql, [characterContent.name, characterContent.info, characterContent.pic, req.session.user_id ], (err, results) => {
     if (err) return res.cc(err)
     console.log('results', results)
+    console.log('addCharacterSql',addCharacterSql)
     if (results.affectedRows === 1) return res.send({ status: 1, message: '新增人物成功！' })
   })
 }
