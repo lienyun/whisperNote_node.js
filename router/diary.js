@@ -19,6 +19,7 @@ router.get('/getPer', diaryHandler.getPer)
 
 router.post('/deleteDiary', diaryHandler.deleteDiary)
 
+router.get('/getFriendDiary', diaryHandler.getFriendDiary)
 
 
 module.exports = router

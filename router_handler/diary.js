@@ -100,6 +100,30 @@ const deleteDiary = (req, res) => {
   })
 }
 
+//get朋友的日記
+const getFriendDiary = (req, res) =>{
+  const gerFriendId = 'SELECT friend_id FROM friend WHERE user_id = ?'
+  db.query(gerFriendId, req.session.user_id, (err, results) => {
+    if (err) return res.cc(err)
+    let friend_id_array = results.map(e => e.friend_id)
+    let friend_id = friend_id_array.toString()
+    console.log('friend_id',friend_id)
+
+    const getFriendDiarySql = `SELECT * FROM diary WHERE user_id IN (${friend_id})`
+    db.query(getFriendDiarySql, (err, results) => {
+      // console.log(friend_id)
+      // console.log(getFriendDiarySql)
+    if (err) return res.cc(err)
+    res.send({
+      status:1,
+      message: '取得朋友的日記',
+      data: results
+    })
+
+    })
+  })
+}
+
 module.exports = {
   addPostDiary,
   getDiary,
@@ -107,5 +131,6 @@ module.exports = {
   editDiary,
   addPer,
   getPer,
-  getMyDiary
+  getMyDiary,
+  getFriendDiary
 }
