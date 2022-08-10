@@ -103,13 +103,14 @@ const deleteDiary = (req, res) => {
 //get朋友的日記
 const getFriendDiary = (req, res) =>{
   const gerFriendId = 'SELECT friend_id FROM friend WHERE user_id = ?'
+
   db.query(gerFriendId, req.session.user_id, (err, results) => {
     if (err) return res.cc(err)
     let friend_id_array = results.map(e => e.friend_id)
     let friend_id = friend_id_array.toString()
     console.log('friend_id',friend_id)
 
-    const getFriendDiarySql = `SELECT * FROM diary WHERE user_id IN (${friend_id})`
+    const getFriendDiarySql = `SELECT * FROM diary NATURAL JOIN diarypermission WHERE user_id IN (${friend_id})`
     db.query(getFriendDiarySql, (err, results) => {
       // console.log(friend_id)
       // console.log(getFriendDiarySql)
