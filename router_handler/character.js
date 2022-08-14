@@ -17,13 +17,12 @@ const getCharacter = (req, res) => {
 //新增八卦人物
 const addCharacter = (req, res) => {
   const characterContent = req.body
-  console.log('characterContent',characterContent)
+  console.log('characterContent', characterContent)
 
-  const addCharacterSql = 'INSERT INTO whispernote0803.character (character_name, character_info, character_pic, user_id) VALUES (?, ?, ?, ?)'
-  db.query(addCharacterSql, [characterContent.name, characterContent.info, characterContent.pic, req.session.user_id ], (err, results) => {
+  const addCharacterSql = 'INSERT INTO whispernote0803.character (character_name, character_info, user_id, character_pic) VALUES (?, ?, ?, ?)'
+  db.query(addCharacterSql, [characterContent.name, characterContent.info, req.session.user_id, (characterContent.pic||'https://www.w3schools.com/howto/img_avatar.png')], (err, results) => {
     if (err) return res.cc(err)
     console.log('results', results)
-    console.log('addCharacterSql',addCharacterSql)
     if (results.affectedRows === 1) return res.send({ status: 1, message: '新增人物成功！' })
   })
 }

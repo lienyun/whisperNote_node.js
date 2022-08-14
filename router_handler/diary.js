@@ -108,12 +108,10 @@ const getFriendDiary = (req, res) =>{
     if (err) return res.cc(err)
     let friend_id_array = results.map(e => e.friend_id)
     let friend_id = friend_id_array.toString()
-    console.log('friend_id',friend_id)
 
     const getFriendDiarySql = `SELECT * FROM diary NATURAL JOIN diarypermission WHERE user_id IN (${friend_id})`
     db.query(getFriendDiarySql, (err, results) => {
-      // console.log(friend_id)
-      // console.log(getFriendDiarySql)
+
     if (err) return res.cc(err)
     res.send({
       status:1,
