@@ -3,7 +3,6 @@ const db = require('../db/index')
 //取得用戶資料(顯示在profile頁面)
 const getProfile = (req, res) => {
   const profileSql = 'select user_id, displayname, email, user_pic from user where user_id= ?'
-  console.log(req.session.user_id)
   db.query(profileSql, req.session.user_id, (err, results) => {
     if (err) return console.log(err.message)
     if (results.length !== 1) return res.cc('取得用戶資訊失敗')
