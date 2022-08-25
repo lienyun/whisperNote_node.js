@@ -2,7 +2,7 @@ const db = require('../db/index')
 
 //顯示朋友列表
 const getFriend = (req, res) => {
-  const getFriendSql = 'SELECT user.user_id, user.email, friend.friend_id, friend.friend_displayname, friend.friend_pic, friend_email FROM user LEFT JOIN friend ON user.user_id=friend.user_id WHERE user.user_id = ?'
+  const getFriendSql = 'SELECT user.user_id, user.email, friend.friend_id, friend.friend_displayname, friend.friend_pic FROM user LEFT JOIN friend ON user.user_id=friend.user_id WHERE user.user_id = ?'
   db.query(getFriendSql, req.session.user_id, (err, results) => {
     if (err) return res.cc(err)
 
@@ -66,20 +66,8 @@ const addFriend = (req, res) => {
   })
 }
 
-// 刪除好友
-const deleteFriend = (req, res) =>{
-  const deleteFriendContent = req.body
-  const deleteFriendSql = 'DELETE FROM friend WHERE user_id = ? AND friend_id = ?'
-  db.query(deleteFriendSql, [req.session.user_id, deleteFriendContent.friend_id, (err, results) => {
-    if (err) return res.cc(err)
-    if(results.affectedRows === 1){
-      console.log('刪除成功！')
-    }
-  }])
-}
 
 module.exports = {
   getFriend,
-  addFriend,
-  deleteFriend
+  addFriend
 }
