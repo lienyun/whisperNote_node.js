@@ -2,7 +2,7 @@ const db = require('../db/index')
 
 //取得八卦人物列表
 const getCharacter = (req, res) => {
-  const getCharacterSql = 'SELECT * FROM whispernote0803.character WHERE user_id = ?'
+  const getCharacterSql = 'SELECT * FROM whispernote0803.character WHERE user_id = ? AND character_status = 1'
   db.query(getCharacterSql, req.session.user_id, (err, results) => {
     if (err) return res.cc(err)
     res.send({
@@ -17,7 +17,6 @@ const getCharacter = (req, res) => {
 //新增八卦人物
 const addCharacter = (req, res) => {
   const characterContent = req.body
-  console.log('characterContent', characterContent)
 
   const addCharacterSql = 'INSERT INTO whispernote0803.character (character_name, character_info, user_id, character_pic) VALUES (?, ?, ?, ?)'
   db.query(addCharacterSql, [characterContent.name, characterContent.info, req.session.user_id, (characterContent.pic||'https://www.w3schools.com/howto/img_avatar.png')], (err, results) => {
@@ -30,6 +29,7 @@ const addCharacter = (req, res) => {
 //修改八卦人物
 const editCharacter = (req, res) => {
   const editContent = req.body
+  console.log('editContent',editContent)
   const editSql = 'update whispernote0803.character set character_name = ?, character_info = ?,character_pic = ? where user_id = ?'
   db.query(editSql, [editContent.name, editContent.info, editContent.pic, req.session.user_id], (err, results) => {
     if (err) return res.cc(err)
@@ -46,8 +46,9 @@ const editCharacter = (req, res) => {
 
 //刪除八卦人物
 const deleteCharacter = (req, res) => {
-  const deleteSql = 'update whispernote0803.character set status = 0 where character_id =?'
+  const deleteSql = 'update whispernote0803.character set character_status = 0 where character_id =?'
   const characterContent = req.body
+  
   db.query(deleteSql, characterContent.character_id, (err, results) => {
     if (err) return res.cc(err)
     if (results.affectedRows === 1) {

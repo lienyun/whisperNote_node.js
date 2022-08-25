@@ -10,7 +10,7 @@ router.post('/addCharacter', characterHandler.addCharacter)
 
 router.get('/editCharacter', characterHandler.editCharacter)
 
-router.get('/deleteCharacter', characterHandler.deleteCharacter)
+router.post('/deleteCharacter', characterHandler.deleteCharacter)
 
 router.get('/getCharacter', characterHandler.getCharacter)
 
