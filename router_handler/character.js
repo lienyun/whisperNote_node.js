@@ -30,8 +30,8 @@ const addCharacter = (req, res) => {
 //修改八卦人物
 const editCharacter = (req, res) => {
   const editContent = req.body
-  const editSql = 'update whispernote0803.character set character_name = ?, character_info = ?,character_pic = ? where user_id = ?'
-  db.query(editSql, [editContent.name, editContent.info, editContent.pic, req.session.user_id], (err, results) => {
+  const editSql = 'update whispernote0803.character set character_name = ?, character_info = ?,character_pic = ? where character_id = ?'
+  db.query(editSql, [editContent.name, editContent.info, editContent.pic, editContent.id], (err, results) => {
     if (err) return res.cc(err)
     if (results.affectedRows === 1) {
       console.log('修改人物成功')
