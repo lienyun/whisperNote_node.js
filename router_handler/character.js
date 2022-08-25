@@ -2,7 +2,7 @@ const db = require('../db/index')
 
 //取得八卦人物列表
 const getCharacter = (req, res) => {
-  const getCharacterSql = 'SELECT * FROM whispernote0803.character WHERE user_id = ?'
+  const getCharacterSql = 'SELECT * FROM whispernote0803.character WHERE user_id = ? AND character_status = 1'
   db.query(getCharacterSql, req.session.user_id, (err, results) => {
     if (err) return res.cc(err)
     res.send({
@@ -46,13 +46,17 @@ const editCharacter = (req, res) => {
 
 //刪除八卦人物
 const deleteCharacter = (req, res) => {
-  const deleteSql = 'update whispernote0803.character set status = 0 where character_id =?'
+  const deleteSql = 'update whispernote0803.character set character_status = 0 where character_id =?'
   const characterContent = req.body
   db.query(deleteSql, characterContent.character_id, (err, results) => {
     if (err) return res.cc(err)
     if (results.affectedRows === 1) {
       console.log('標記刪除成功')
     }
+    res.send({
+      status: 1,
+      message: '標記刪除成功',
+    })
   })
 }
 
