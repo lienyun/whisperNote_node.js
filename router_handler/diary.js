@@ -34,10 +34,9 @@ const addPer = (req, res) => {
 
 // 所有的日記(月曆)(我+朋友的)
 const getDiary = (req, res)=>{
-  const getDiarySql = 'select * from diary NATURAL JOIN diarypermission where user_id = ? and diary_status = 1'
+  const getDiarySql = 'select * from diary NATURAL JOIN diarypermission where user_id = ? and diary_status = 1 ORDER BY date DESC'
   db.query(getDiarySql, req.session.user_id, (err, results)=>{
     if (err) return res.cc(err)
-    // console.log(results)
     res.send({
       status:1 ,
       message:'GET到你日記了啦！',
@@ -51,7 +50,7 @@ const getMyDiary = (req, res)=>{
   const getDiarySql = 'select * from diary NATURAL JOIN diarypermission where user_id = ? and diary_status = 1'
   db.query(getDiarySql, req.session.user_id, (err, results)=>{
     if (err) return res.cc(err)
-    // console.log(results)
+    console.log('getMyDiary',results)
     res.send({
       status:1 ,
       message:'GET到你日記了啦！',
