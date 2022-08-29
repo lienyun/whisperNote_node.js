@@ -8,7 +8,7 @@ const profileHandler = require('../router_handler/profile')
 router.get('/profile', profileHandler.getProfile)
 
 //更新profile
-router.post('./profile', profileHandler.updateProfile)
+router.post('/profile', profileHandler.updateProfile)
 
 // 向外共享路由对象
 module.exports = router
