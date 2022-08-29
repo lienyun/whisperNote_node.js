@@ -54,7 +54,7 @@ const addFriend = (req, res) => {
         }
 
         if (err) return res.cc(err)
-        console.log(err)
+        // console.log(err)
         console.log('addFriend', results)
         if (results.affectedRows === 1)
           return res.send({
@@ -66,8 +66,21 @@ const addFriend = (req, res) => {
   })
 }
 
-
+const deleteFriend = (req, res) => {
+  const deleteFriendContent = req.body
+  console.log('deleteFriendContent',deleteFriendContent)
+  const deleteFriendSql = 'DELETE FROM friend WHERE friend_id = ?'
+  db.query(deleteFriendSql, deleteFriendContent.friend_id, (err, results) => {
+    if (err) return res.cc(err)
+    res.send({
+      status: 1,
+      message: '切八段成功',
+      data: results
+    })
+  })
+}
 module.exports = {
   getFriend,
-  addFriend
+  addFriend,
+  deleteFriend
 }

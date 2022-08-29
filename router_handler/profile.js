@@ -15,12 +15,22 @@ const getProfile = (req, res) => {
 //更新profile
 const updateProfile = (req, res) => {
   const updateContent = req.body
-  console.log('updateContent',updateContent)
-  const sql = 'update user set ? where id = ?'
-  db.query(sql, [updateContent, req.session.user_id],(err, results) =>{
+  console.log('updateContent', updateContent)
+
+//先改自己的username
+  const sql = 'update user set ? where user_id = ?'
+  db.query(sql, [updateContent, req.session.user_id], (err, results) => {
     if (err) return console.log(err.message)
     if (results.length !== 1) return res.cc('修改用戶資訊失敗')
-    res.send('更新用戶資訊成功', 0)
+    // res.send('更新用戶資訊成功', 0)
+
+    //friend table也要修改
+    const joinSql = 'UPDATE friend INNER JOIN user ON friend.friend_id = user.user_id SET ? WHERE user.user_id = ? AND friend.friend_id = user.user_id'
+    db.query(joinSql, [updateContent, req.session.user_id], (err, results) => {
+      console.log('joinSql', results)
+      if (err) return console.log(err.message)
+      if (results.length !== 1) return res.cc('friend table修改成功')
+    })
 
   })
 }
